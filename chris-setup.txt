@@ -1,0 +1,13 @@
+docker run -p 27017:27017 --name mongo -d mongo:4.4-bionic
+
+# terminal inside mongo container
+docker exec -it mongo bash
+
+
+
+brew install mongodb-community@4.4
+brew install mongodb/brew/mongodb-database-tools
+
+
+mongoimport --db=rentals --collection customers mongodb://localhost:27017 DVDRentals-customers.json
+mongoimport --db=rentals --collection films mongodb://localhost:27017 DVDRentals-films.json
