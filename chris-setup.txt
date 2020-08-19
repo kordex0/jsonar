@@ -1,8 +1,9 @@
+# List of commands Chris ran to get mongo up and running
+
 docker run -p 27017:27017 --name mongo -d mongo:4.4-bionic
 
-# terminal inside mongo container
-docker exec -it mongo bash
-
+# openes terminal inside mongo container
+# docker exec -it mongo bash
 
 
 brew install mongodb-community@4.4

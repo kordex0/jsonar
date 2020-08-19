@@ -2,14 +2,12 @@ from typing import List
 
 from fastapi import FastAPI, HTTPException
 from mongoengine import connect
-from pydantic import BaseModel, Field
 
-from . import models, schemas
+from . import config, models, schemas
 
-connect(host='mongodb://localhost:27017/rentals')
+connect(host=config.settings.mongo_uri)
 
 app = FastAPI()
-
 
 
 @app.get("/customers", response_model=List[schemas.CustomerList])
@@ -38,8 +36,32 @@ def list_customer_rentals(customer_id: int, skip: int = 0, limit: int = 100):
 
 @app.get("/available_films", response_model=List[schemas.FilmList])
 def list_available_films(skip: int = 0, limit: int = 100):
-    films = list(models.Film.objects().order_by('id')[skip:(skip+limit)])
-    return films
+    films = models.Film.objects.aggregate(*[
+        {
+            "$lookup": {
+                "from": models.Customer._get_collection_name(),
+                "localField": "_id",
+                "foreignField": "rentals.film_id",
+                "as": "relation",
+            }
+        },
+        {
+            "$match": {
+                "relation": {"$size": 0},
+            }
+        },
+        {
+            "$skip": skip
+        },
+        {
+            "$limit": limit
+        },
+        {
+            "$project": {"relation": 0}
+        },
+    ])
+
+    return [models.Film._from_son(film) for film in films]
 
 
 @app.get("/films/{film_id}", response_model=schemas.FilmDetails)
