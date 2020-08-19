@@ -36,7 +36,7 @@ def list_customer_rentals(customer_id: int, skip: int = 0, limit: int = 100):
 
 @app.get("/available_films", response_model=List[schemas.FilmList])
 def list_available_films(skip: int = 0, limit: int = 100):
-    films = models.Film.objects.aggregate(*[
+    films = models.Film.objects.aggregate([
         {
             "$lookup": {
                 "from": models.Customer._get_collection_name(),

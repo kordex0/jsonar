@@ -33,7 +33,28 @@ This command will run the webserver:
 
 If you would like to run the webserver and have it reload every
 time code changes, you can run:
->>> uvicorn rentals.main:app --reload
+>> uvicorn rentals.main:app --reload
+
+
+
+USING THE WEBSERVER
+
+I have written up a quick client.py script to emulate a usage of the web server. After turning
+on the webserver this can be run and will print out the responses of some calls to the webserver.
+
+The other way to use the webserver is to go to localhost:8000/docs which is an auto-generated
+openapi specification of the endpoints, and allows testing of all the endpoints.
+
+
+
+
+TESTING THE WEBSERVER
+
+Testing has been set up with pytest. To run the tests, use this command:
+>> pytest tests
+
+The tests assume that the database has been loaded with DVDRentals-customers.json in the customers collection
+and DVDRentals-films.json in the films collection
 
 
 

@@ -13,10 +13,7 @@ class DateTimeField(mongoengine.DateTimeField):
         if isinstance(value, datetime):
             return value
         else:
-            try:
-                return dateutil.parser.parse(value)
-            except Exception:
-                return None
+            return dateutil.parser.parse(value)
 
     def to_mongo(self, value):
         value = super().to_mongo(value)
