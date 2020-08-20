@@ -12,7 +12,7 @@ app = FastAPI()
 
 
 @app.get("/customers", response_model=List[schemas.CustomerList])
-def list_customers(skip: int = 0, limit: int = 100):
+def list_customers(skip: int = 0, limit: int = 20):
     customers = list(models.Customer.objects().order_by('id')[skip:(skip+limit)])
     return customers
 
@@ -27,7 +27,7 @@ def get_customer_details(customer_id: int):
 
 
 @app.get("/customers/{customer_id}/rentals", response_model=List[schemas.Rental])
-def list_customer_rentals(customer_id: int, skip: int = 0, limit: int = 100):
+def list_customer_rentals(customer_id: int, skip: int = 0, limit: int = 20):
     customer = models.Customer.objects(id=customer_id).get()
     if customer:
         return customer.rentals[skip:(skip+limit)]
@@ -36,7 +36,7 @@ def list_customer_rentals(customer_id: int, skip: int = 0, limit: int = 100):
 
 
 @app.get("/available_films", response_model=List[schemas.FilmList])
-def list_available_films(skip: int = 0, limit: int = 100):
+def list_available_films(skip: int = 0, limit: int = 20):
     def generate_films():
         for film in models.Film.objects().order_by("_id"):
             if not models.Customer.objects(rentals__match={"film_id": film.id, "return_date": None}).limit(1).count(True):
@@ -51,13 +51,13 @@ def get_film_details(film_id: int):
     if film:
         return film
     else:
-        raise HTTPException(status_code=404, detail="Customer not found")
+        raise HTTPException(status_code=404, detail="Film not found")
 
 
 @app.get("/films/{film_id}/renters", response_model=List[schemas.CustomerList])
-def get_film_renters(film_id: int, skip: int = 0, limit: int = 100):
+def get_film_renters(film_id: int, skip: int = 0, limit: int = 20):
     film = models.Film.objects(id=film_id).get()
     if film:
         return list(models.Customer.objects(rentals__film_id=film.id).order_by('id')[skip:(skip+limit)])
     else:
-        raise HTTPException(status_code=404, detail="Customer not found")
+        raise HTTPException(status_code=404, detail="Film not found")

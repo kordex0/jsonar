@@ -45,6 +45,7 @@ def test_get_customer_rentals(app):
 
     assert len(rentals) == 10
     assert rentals[0] == {
+        "film_id": 611,
         "rental_date": "2005-06-15T00:54:12",
         "days_rented": 8,
         "cost": 5.99,
@@ -66,7 +67,7 @@ def test_list_available_films(app):
         "category": "Documentary",
         "description": "A Astounding Reflection of a Lumberjack And a Car who must Sink a Lumberjack in A Baloon Factory",
         "rating": "NC-17",
-        "rental_duration": "7"
+        "rental_duration": "7",
     }
 
 
