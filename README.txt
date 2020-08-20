@@ -40,7 +40,7 @@ time code changes, you can run:
 USING THE WEBSERVER
 
 I have written up a quick client.py script to emulate a usage of the web server. After turning
-on the webserver this can be run and will print out the responses of some calls to the webserver.
+on the webserver, this can be run and will print out the responses of some calls to the webserver.
 
 The other way to use the webserver is to go to localhost:8000/docs which is an auto-generated
 openapi specification of the endpoints, and allows testing of all the endpoints.
