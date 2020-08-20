@@ -109,12 +109,12 @@ Return a list of films that are available for renting
 GET /available_films
 [
   {
-    "id": 2,
-    "title": "ACE GOLDFINGER",
-    "category": "Horror",
-    "description": "A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China",
-    "rating": "G",
-    "rental_duration": "3"
+    "id": 3,
+    "title": "ADAPTATION HOLES",
+    "category": "Documentary",
+    "description": "A Astounding Reflection of a Lumberjack And a Car who must Sink a Lumberjack in A Baloon Factory",
+    "rating": "NC-17",
+    "rental_duration": "7"
   },
   ...
 ]

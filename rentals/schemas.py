@@ -29,6 +29,8 @@ class CustomerDetails(CustomerBase):
 
 
 class Rental(BaseModel):
+
+    film_id: int
     rental_date: datetime
     days_rented: int
     cost: Decimal

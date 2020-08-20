@@ -1,3 +1,4 @@
+from itertools import islice
 from typing import List
 
 from fastapi import FastAPI, HTTPException
@@ -36,32 +37,13 @@ def list_customer_rentals(customer_id: int, skip: int = 0, limit: int = 100):
 
 @app.get("/available_films", response_model=List[schemas.FilmList])
 def list_available_films(skip: int = 0, limit: int = 100):
-    films = models.Film.objects.aggregate([
-        {
-            "$lookup": {
-                "from": models.Customer._get_collection_name(),
-                "localField": "_id",
-                "foreignField": "rentals.film_id",
-                "as": "relation",
-            }
-        },
-        {
-            "$match": {
-                "relation": {"$size": 0},
-            }
-        },
-        {
-            "$skip": skip
-        },
-        {
-            "$limit": limit
-        },
-        {
-            "$project": {"relation": 0}
-        },
-    ])
+    def generate_films():
+        foo__match = {'shape': "square", "color": "purple"}
+        for film in models.Film.objects().order_by("_id"):
+            if not models.Customer.objects(rentals__match={"film_id": film.id, "return_date": None}).limit(1).count(True):
+                yield film
 
-    return [models.Film._from_son(film) for film in films]
+    return list(islice(generate_films(), skip, skip + limit))
 
 
 @app.get("/films/{film_id}", response_model=schemas.FilmDetails)
